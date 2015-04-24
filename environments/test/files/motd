@@ -1,0 +1,21 @@
+#!/bin/bash
+
+PROOCCOUNT=`ps -l | wc -l`
+PROCCOUNT=`expr $PROCCOUNT - 4`
+hostname | cut -d . -f 1,2 | figlet -f banner
+#hostname -s | figlet -f big
+echo -e "
++++++++++++++++++: System Data :+++++++++++++++++++
++ Hostname = `hostname`
++ Kernel = `uname -r`
++ Uptime = `uptime | sed 's/.*up ([^,]*), .*/1/'`
++ CPU = `cat /proc/cpuinfo | grep 'model name' | uniq | sed s/model\ name.*\:\ //`
++ Num of CPUs = ` cat /proc/cpuinfo | grep "^processor" | wc -l`
++ Memory = `cat /proc/meminfo | grep MemTotal | awk {'print $2'}` kB
++ FreeMem = `cat /proc/meminfo | grep MemFree | awk {'print $2'}` kB
+++++++++++++++++++: User Data :++++++++++++++++++++
++ Username = `whoami`
++ Sessions = `who | grep $USER | wc -l`
++ Processes = $PROCCOUNT
++++++++++++++++++++++++++++++++++++++++++++++++++++
+"
